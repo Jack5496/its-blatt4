@@ -3,6 +3,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <signal.h> /* Damit ich Signale abfangen kann */
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/timeb.h>
