@@ -12,14 +12,14 @@
 #include <stdlib.h>
 
 enum messageTypes { data_message = 'd', heartbeat_message = 'h' };
-struct hostent* host;
+struct hostent* host; /* Deklariere Host vorher um Lastwish zum laufen zu bringen */
 
 /**
 * Letzer aufruf um alles wichtige zu schließen
 */
 void last_wish(int i){
-  if(host!=NULL){
-   free(host); 
+  if(host!=NULL){ //falls wir einen host haben
+   free(host); //schließe den
   }
   printf("\nManuelles Beenden\n");
   exit(1);
