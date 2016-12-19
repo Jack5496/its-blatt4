@@ -17,6 +17,7 @@ struct hostent* host;
 * Letzer aufruf um alles wichtige zu schließen
 */
 void last_wish(int i){
+  printf("\nLast Wish\n");
   if(host!=NULL){
    printf("\nBeende Host\n");
    free(host); 
@@ -49,16 +50,16 @@ int serializeHeartbeatMessage(char* _buffer, int32_t _requested_message_length, 
 int main(int argc, char* argv[])
 {
   //Handlet aktivierung für STRG+C
-	//http://stackoverflow.com/questions/1641182/how-can-i-catch-a-ctrl-c-event-c
-	struct sigaction sigIntHandler;
-	int i;
+  //http://stackoverflow.com/questions/1641182/how-can-i-catch-a-ctrl-c-event-c
+  struct sigaction sigIntHandler;
+  int i;
 
-	sigIntHandler.sa_handler = last_wish;
-	sigemptyset(&sigIntHandler.sa_mask);
-	sigIntHandler.sa_flags = 0; //setze sa flags 0
+  sigIntHandler.sa_handler = last_wish;
+  sigemptyset(&sigIntHandler.sa_mask);
+  sigIntHandler.sa_flags = 0; //setze sa flags 0
 
-	sigaction(SIGINT, &sigIntHandler, NULL);
-	// Ende für STRG+C
+  sigaction(SIGINT, &sigIntHandler, NULL);
+  // Ende für STRG+C
   
   
   
