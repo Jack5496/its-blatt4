@@ -11,6 +11,18 @@
 #include <stdlib.h>
 
 enum messageTypes { data_message = 'd', heartbeat_message = 'h' };
+struct hostent* host;
+
+/**
+* Letzer aufruf um alles wichtige zu schließen
+*/
+void last_wish(int i){
+  if(host!=NULL){
+   free(host); 
+  }
+	printf("\nManuelles Beenden\n");
+  exit(1);
+}
 
 
 /* Structure of Heartbeat Message
@@ -35,6 +47,20 @@ int serializeHeartbeatMessage(char* _buffer, int32_t _requested_message_length, 
 
 int main(int argc, char* argv[])
 {
+  //Handlet aktivierung für STRG+C
+	//http://stackoverflow.com/questions/1641182/how-can-i-catch-a-ctrl-c-event-c
+	struct sigaction sigIntHandler;
+	int i;
+
+	sigIntHandler.sa_handler = last_wish;
+	sigemptyset(&sigIntHandler.sa_mask);
+	sigIntHandler.sa_flags = 0; //setze sa flags 0
+
+	sigaction(SIGINT, &sigIntHandler, NULL);
+	// Ende für STRG+C
+  
+  
+  
   // Variables needed for the network / socket usage
   int32_t socket_descriptor;
   int32_t return_code;
@@ -44,7 +70,6 @@ int main(int argc, char* argv[])
 
   struct sockaddr_in remote_address;
   socklen_t remote_address_size;
-  struct hostent* host;
 
   int32_t bufferLength = 32000;
   char buffer[bufferLength];
@@ -93,6 +118,7 @@ int main(int argc, char* argv[])
       (struct sockaddr*) &remote_address, &remote_address_size);
   if(bytes_received < 0){
     printf("%s: cannot receive heartbeat echo.\n", argv[0]);
+    free(host);
     return(-1);
   }
   printf("Echoed Heartbeat, %d bytes:\n",bytes_received);
