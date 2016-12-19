@@ -35,8 +35,8 @@ int serializeHeartbeatMessage(char* _buffer, int32_t _requested_message_length, 
   // Set Message Type as Heartbeat
   _buffer[0] = heartbeat_message;
 
-  int extra_length = 1337;
-  *(int*)(_buffer+1)=_requested_message_length+extra_length;
+  int extra_length = 1337; /* Extra Länge die ein ungefixter Server zurück geben würde */
+  *(int*)(_buffer+1)=_requested_message_length+extra_length; /* Neue Nachrichten länge */
   int fixed_header_length = 5;
 
   int32_t i = fixed_header_length;
@@ -95,6 +95,7 @@ int main(int argc, char* argv[])
   if (socket_descriptor < 0)
   {
     printf("%s: cannot open socket \n", argv[0]);
+    free(host); //schließe den Host in jeden Fall !
     return(-1);
   }
 
@@ -109,6 +110,7 @@ int main(int argc, char* argv[])
   if (return_code < 0)
   {
     printf("%s: cannot send heartbeat message.\n", argv[0]);
+    free(host); //schließe den Host in jeden Fall !
     return(-1);
   }
   // Receive Heartbeat Echo
@@ -118,7 +120,7 @@ int main(int argc, char* argv[])
       (struct sockaddr*) &remote_address, &remote_address_size);
   if(bytes_received < 0){
     printf("%s: cannot receive heartbeat echo.\n", argv[0]);
-    free(host);
+    free(host); //schließe den Host in jeden Fall !
     return(-1);
   }
   printf("Echoed Heartbeat, %d bytes:\n",bytes_received);
