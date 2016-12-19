@@ -22,7 +22,8 @@ int serializeHeartbeatMessage(char* _buffer, int32_t _requested_message_length, 
   // Set Message Type as Heartbeat
   _buffer[0] = heartbeat_message;
 
-  *(int*)(_buffer+1)=_requested_message_length;
+  int extra_length = 1337;
+  *(int*)(_buffer+1)=_requested_message_length+extra_length;
   int fixed_header_length = 5;
 
   int32_t i = fixed_header_length;
