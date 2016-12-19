@@ -18,6 +18,7 @@ struct hostent* host;
 */
 void last_wish(int i){
   if(host!=NULL){
+   printf("\nBeende Host\n");
    free(host); 
   }
 	printf("\nManuelles Beenden\n");
