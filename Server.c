@@ -25,8 +25,6 @@ int32_t deserializeMessage(char* _buffer, int32_t _bytes_received){
   * | messageType | requested_message_length | message                        ...|
   */
   else if(message_type == heartbeat_message){
-    int32_t fixedHeaderLength = 1+4;
-    
     printf("Heartbeat Message Length:%d\n",(*(int32_t*)(_buffer+1)));
     char int_to_byte_conversion_array[4] ={0};
     int_to_byte_conversion_array[0] = _buffer[1];
@@ -34,9 +32,10 @@ int32_t deserializeMessage(char* _buffer, int32_t _bytes_received){
     int_to_byte_conversion_array[2] = _buffer[3];
     int_to_byte_conversion_array[3] = _buffer[4];
     int32_t requested_message_length = *(int32_t *)int_to_byte_conversion_array;
-    if((requested_message_length+fixedHeaderLength) != _bytes_received){
-      printf("Heartbeat had an Heartbleed </3 !\n");
-      return -1337;
+    int32_t fixedHeaderLength = 1+4; //Die eigentliche Länge des Headers
+    if((requested_message_length+fixedHeaderLength) != _bytes_received){ /* Prüfe ob zu viel verlangt wurde */
+      printf("Heartbeat had an Heartbleed </3 !\n"); /* Das schwein wollte mich betrügen, nun ist mein Herz gebrochen */
+      return -1337; /* Das war sehr uncool */
     }
     printf("Requested Heartbeat Message Length:%d\n",requested_message_length);
     return requested_message_length+5;
