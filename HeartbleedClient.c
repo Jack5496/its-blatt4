@@ -18,12 +18,10 @@ struct hostent* host;
 * Letzer aufruf um alles wichtige zu schließen
 */
 void last_wish(int i){
-  printf("\nLast Wish\n");
   if(host!=NULL){
-   printf("\nBeende Host\n");
    free(host); 
   }
-	printf("\nManuelles Beenden\n");
+  printf("\nManuelles Beenden\n");
   exit(1);
 }
 
